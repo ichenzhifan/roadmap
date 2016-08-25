@@ -1,0 +1,79 @@
+/**
+ * 主程序入口
+ */
+(function() {
+
+    // 初始化
+    init();
+
+    /**
+     * 初始化, 创建待做事项列表实例, 并且添加一个待做事项.
+     */
+    function init() {
+        // 创建待做事项列表实例.
+        var _todoList = new TodoList();
+
+        // 创建一个新的待做事项.
+        var _todo = new Todo('Read book', 'Must finish this week');
+
+        // 把新的事项添加到待做列表中.
+        _todoList.add(_todo);
+    }
+
+    /**
+     * 定义一个待做事项的类.
+     * @param {string} title 待做事项的标题
+     * @param {string} desc  待做事项的描述信息
+     */
+    function Todo(title, desc) {
+        this.id = Date.now();
+        this.title = title;
+        this.desc = desc;
+    }
+
+    /**
+     * 定义一个待做事项列表的类.
+     */
+    function TodoList() {
+        this.list = [];
+    }
+
+    /**
+     * 添加一个新的待做事项到列表
+     * @param {object} todo 新的待做事项
+     */
+    TodoList.prototype.add = function(todo) {
+        this.list.push(todo);
+    }
+
+    /**
+     * 从列表中移除指定的待做事项
+     * @param  {object} todo 需要移除的待做事项
+     */
+    TodoList.prototype.remove = function(todo) {
+        // 参数检测: 如果todo为空或者列表为空, 就直接返回.
+        if (!todo || !this.list.length) {
+            return;
+        }
+
+        // 创建一个新变量, 用来保存要移除的事项在列表中的索引.
+        // 默认值为-1, 表示该事项在列表中不存在.
+        var _index = -1;
+
+        // 循环列表的每一项, 查找待做事项在列表中的索引.
+        for (var i = 0; i < this.list.length; i++) {
+            // 如果id相等, 那么当前的事项就是我们要找的.        	
+            if (this.list[i].id === todo.id) {
+                _index = i;
+
+                // 一旦找到, 就退出当前的循环.
+                break;
+            }
+        }
+
+        // 当_index不为-1时, 说明要删除的事项在列表中存在.
+        if (_index != -1) {
+            this.list.splice(_index, 1);
+        }
+    }
+})();
